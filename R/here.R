@@ -1,8 +1,8 @@
-##' Evaluate expresion under temporary here root
+##' Evaluate an expresion under a temporary here() root
 ##'
-##' Changes here() to temporarily point to a new directory when
+##' Changes [here::here()] to temporarily point to a new directory when
 ##' evaluating expression. Changes back afterwards.
-##' @title temporarily change here() root
+##' @title Temporarily Change here() Root For an Expression
 ##' @param new_here new temporary here root directory
 ##' @param expr expression to evaluate
 ##' @param chdir change working directory also
@@ -55,10 +55,10 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
     local({
 
-        # change to this director and setup here()
+        # change to this directory and setup here()
         local_dir(new_here)
 
-        ## # redirect here temporarily
+        # redirect here temporarily
         f(i_am(path_rel(tf_temp, new_here)))
 
     })
@@ -70,15 +70,15 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
 }
 
-##' Changes here() root for current environment
+##' Changes the here() root for current environment
 ##'
-##' Changes here() to temporarily point to a new directory for active
-##' entironment.
-##' @title temporarily change here() root
+##' Changes [here::here()] to temporarily point to a new directory for the active
+##' entironment. Changes back afterwards.
+##' @title Temporarily Change here() Root For a Block
 ##' @param new_here new temporary here root directory
 ##' @param chdir change working directory also
 ##' @param verbose show here's messages on setting new root
-##' @param .local_envir the environment to use for scoping
+##' @param .local_envir the environment to use for scoping, see [withr::local_dir()]
 ##' @return The original here() root
 ##' @author Torbjørn Lindahl
 ##' @importFrom withr local_tempfile local_dir defer
@@ -139,10 +139,10 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
 
     local({
 
-        # change to this director and setup here()
+        # change to this directory and setup here()
         local_dir(new_here)
 
-        ## # redirect here temporarily
+        # redirect here temporarily
         f(i_am(path_rel(tf_temp, new_here)))
 
     })

@@ -2,7 +2,7 @@
 % Please edit documentation in R/here.R
 \name{local_here}
 \alias{local_here}
-\title{temporarily change here() root}
+\title{Temporarily Change here() Root For a Block}
 \usage{
 local_here(
   new_here,
@@ -18,24 +18,24 @@ local_here(
 
 \item{verbose}{show here's messages on setting new root}
 
-\item{.local_envir}{the environment to use for scoping}
+\item{.local_envir}{the environment to use for scoping, see \code{\link[withr:with_dir]{withr::local_dir()}}}
 }
 \value{
 The original here() root
 }
 \description{
-Changes here() root for current environment
+Changes the here() root for current environment
 }
 \details{
-Changes here() to temporarily point to a new directory for active
-entironment.
+Changes \code{\link[here:here]{here::here()}} to temporarily point to a new directory for the active
+entironment. Changes back afterwards.
 }
 \examples{
 library(here)
 
 myfun <- function() {
 
-  d <- tempdir()
+  d <- tempfile()
   dir.create(d)
 
   local_here(d)
@@ -44,6 +44,8 @@ myfun <- function() {
   stopifnot(d == here())
 
   # do something
+
+  unlink(d, recursive=TRUE)
 
 }
 }
