@@ -17,10 +17,10 @@
 ##' @examples
 ##' library(here)
 ##'
-##' d <- tempdir()
+##' d <- tempfile()
 ##' dir.create(d)
 ##'
-##' with_here(d, cat("here() is now: ",here(),"\n"))
+##' with_here(d, cat("here() is now: ", here(), "\n"))
 with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
     if(!dir_exists(new_here))
@@ -91,7 +91,7 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 ##'
 ##' myfun <- function() {
 ##'
-##'   d <- tempdir()
+##'   d <- tempfile()
 ##'   dir.create(d)
 ##'
 ##'   local_here(d)
@@ -100,6 +100,8 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 ##'   stopifnot(d == here())
 ##'
 ##'   # do something
+##'
+##'   unlink(d, recursive=TRUE)
 ##'
 ##' }
 local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = parent.frame() ) {
