@@ -2,7 +2,7 @@ Package: wither
 Title: Temporarily relocate here() root
 Version: 0.1.0.9000
 Authors@R:
-    person("Torbjørn", "Lindahl", , "torbjorn.lindahl@gmail.com", role = c("aut", "cre"),
+    person("Torbjørn", "Lindahl", , "torbjorn.lindahl@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0009-0007-5538-0783"))
 Description: Provides functions with_here() and local_here() that temporarily lets you execute an expression or a local block with a different here() root.
 License: MIT + file LICENSE
@@ -13,7 +13,7 @@ Suggests:
     devtools,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Imports: 
+Imports:
     fs,
     here,
     withr

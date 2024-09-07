@@ -1,3 +1,8 @@
 ^renv$
 ^renv\.lock$
 ^LICENSE\.md$
+^cran-comments\.md$
+^README\.Rmd$
+^README\.html$
+^wither\.Rproj$
+^\.Rproj\.user$
