@@ -14,7 +14,9 @@ test_that("local_here works", {
 
     local({
 
-        local_here(d)
+        returned_value <- local_here(d)
+
+        expect_equal(returned_value, here_was)
 
         expect_equal(here(), d)
         expect_equal(here("foo"), file.path(d,"foo"))

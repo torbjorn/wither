@@ -7,7 +7,7 @@
 ##' @param expr expression to evaluate
 ##' @param chdir change working directory also
 ##' @param verbose show here's messages on setting new root
-##' @return result of expression
+##' @return the results of the provided R expression
 ##' @author Torbjørn Lindahl
 ##' @importFrom withr local_tempfile local_dir defer
 ##' @importFrom here here i_am
@@ -79,7 +79,7 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 ##' @param chdir change working directory also
 ##' @param verbose show here's messages on setting new root
 ##' @param .local_envir the environment to use for scoping
-##' @return no return
+##' @return The original here() root
 ##' @author Torbjørn Lindahl
 ##' @importFrom withr local_tempfile local_dir defer
 ##' @importFrom here here i_am
@@ -147,5 +147,7 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
 
     if(chdir)
         local_dir(new_here, .local_envir=.local_envir)
+
+    invisible(current_here)
 
 }

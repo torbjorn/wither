@@ -21,7 +21,7 @@ local_here(
 \item{.local_envir}{the environment to use for scoping}
 }
 \value{
-no return
+The original here() root
 }
 \description{
 Changes here() root for current environment

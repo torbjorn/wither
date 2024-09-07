@@ -16,7 +16,7 @@ with_here(new_here, expr, chdir = FALSE, verbose = FALSE)
 \item{verbose}{show here's messages on setting new root}
 }
 \value{
-result of expression
+the results of the provided R expression
 }
 \description{
 Evaluate expresion under temporary here root
