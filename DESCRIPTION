@@ -1,10 +1,10 @@
 Package: wither
-Title: Temporarily relocate here() root
-Version: 0.1.0.9000
+Title: Temporarily Relocate here() Root
+Version: 0.1.0
 Authors@R:
-    person("Torbjørn", "Lindahl", , "torbjorn.lindahl@gmail.com", role = c("aut", "cre"),
+    person("Torbjørn", "Lindahl", , "torbjorn.lindahl@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0009-0007-5538-0783"))
-Description: Provides functions with_here() and local_here() that temporarily lets you execute an expression or a local block with a different here() root.
+Description: Lets you temporarily execute an expression or a local block with a different here() root in the 'here' package. This is useful for sourcing code in other projects which expect the root directory of here() to be the project directory of those projects. This may be the case with git submodules for example.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -13,7 +13,9 @@ Suggests:
     devtools,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Imports: 
+Imports:
     fs,
     here,
     withr
+URL: https://github.com/torbjorn/wither
+BugReports: https://github.com/torbjorn/wither/issues

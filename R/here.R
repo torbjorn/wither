@@ -1,13 +1,13 @@
-##' Evaluate expresion under temporary here root
+##' Evaluate an expresion under a temporary here() root
 ##'
-##' Changes here() to temporarily point to a new directory when
+##' Changes [here::here()] to temporarily point to a new directory when
 ##' evaluating expression. Changes back afterwards.
-##' @title temporarily change here() root
+##' @title Temporarily Change here() Root For an Expression
 ##' @param new_here new temporary here root directory
 ##' @param expr expression to evaluate
 ##' @param chdir change working directory also
 ##' @param verbose show here's messages on setting new root
-##' @return result of expression
+##' @return the results of the provided R expression
 ##' @author Torbjørn Lindahl
 ##' @importFrom withr local_tempfile local_dir defer
 ##' @importFrom here here i_am
@@ -17,10 +17,10 @@
 ##' @examples
 ##' library(here)
 ##'
-##' d <- tempdir()
+##' d <- tempfile()
 ##' dir.create(d)
 ##'
-##' with_here(d, cat("here() is now: ",here(),"\n"))
+##' with_here(d, cat("here() is now: ", here(), "\n"))
 with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
     if(!dir_exists(new_here))
@@ -55,10 +55,10 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
     local({
 
-        # change to this director and setup here()
+        # change to this directory and setup here()
         local_dir(new_here)
 
-        ## # redirect here temporarily
+        # redirect here temporarily
         f(i_am(path_rel(tf_temp, new_here)))
 
     })
@@ -70,16 +70,16 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
 }
 
-##' Changes here() root for current environment
+##' Changes the here() root for current environment
 ##'
-##' Changes here() to temporarily point to a new directory for active
-##' entironment.
-##' @title temporarily change here() root
+##' Changes [here::here()] to temporarily point to a new directory for the active
+##' entironment. Changes back afterwards.
+##' @title Temporarily Change here() Root For a Block
 ##' @param new_here new temporary here root directory
 ##' @param chdir change working directory also
 ##' @param verbose show here's messages on setting new root
-##' @param .local_envir the environment to use for scoping
-##' @return no return
+##' @param .local_envir the environment to use for scoping, see [withr::local_dir()]
+##' @return The original here() root
 ##' @author Torbjørn Lindahl
 ##' @importFrom withr local_tempfile local_dir defer
 ##' @importFrom here here i_am
@@ -91,7 +91,7 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 ##'
 ##' myfun <- function() {
 ##'
-##'   d <- tempdir()
+##'   d <- tempfile()
 ##'   dir.create(d)
 ##'
 ##'   local_here(d)
@@ -100,6 +100,8 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 ##'   stopifnot(d == here())
 ##'
 ##'   # do something
+##'
+##'   unlink(d, recursive=TRUE)
 ##'
 ##' }
 local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = parent.frame() ) {
@@ -137,15 +139,17 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
 
     local({
 
-        # change to this director and setup here()
+        # change to this directory and setup here()
         local_dir(new_here)
 
-        ## # redirect here temporarily
+        # redirect here temporarily
         f(i_am(path_rel(tf_temp, new_here)))
 
     })
 
     if(chdir)
         local_dir(new_here, .local_envir=.local_envir)
+
+    invisible(current_here)
 
 }

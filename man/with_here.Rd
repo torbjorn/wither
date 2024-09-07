@@ -2,7 +2,7 @@
 % Please edit documentation in R/here.R
 \name{with_here}
 \alias{with_here}
-\title{temporarily change here() root}
+\title{Temporarily Change here() Root For an Expression}
 \usage{
 with_here(new_here, expr, chdir = FALSE, verbose = FALSE)
 }
@@ -16,22 +16,22 @@ with_here(new_here, expr, chdir = FALSE, verbose = FALSE)
 \item{verbose}{show here's messages on setting new root}
 }
 \value{
-result of expression
+the results of the provided R expression
 }
 \description{
-Evaluate expresion under temporary here root
+Evaluate an expresion under a temporary here() root
 }
 \details{
-Changes here() to temporarily point to a new directory when
+Changes \code{\link[here:here]{here::here()}} to temporarily point to a new directory when
 evaluating expression. Changes back afterwards.
 }
 \examples{
 library(here)
 
-d <- tempdir()
+d <- tempfile()
 dir.create(d)
 
-with_here(d, cat("here() is now: ",here(),"\n"))
+with_here(d, cat("here() is now: ", here(), "\n"))
 }
 \author{
 Torbjørn Lindahl
