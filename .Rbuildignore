@@ -6,3 +6,4 @@
 ^README\.html$
 ^wither\.Rproj$
 ^\.Rproj\.user$
+^deps\.R$
