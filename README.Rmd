@@ -1,10 +1,21 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # wither
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 Run a block or expression temporarily under a different `here()` root.
@@ -24,12 +35,12 @@ pak::pak("torbjorn/wither")
 
 ## Example
 
-### with\_here
+### with_here
 
-`with_here()` evaluates an expression under a temporarily different here
-root():
+`with_here()` evaluates an expression under a temporarily different
+here root():
 
-``` r
+```{r example}
 library(here)
 library(wither)
 
@@ -40,21 +51,20 @@ dir.create(d)
 
 # have here() be somewhere else for an expression
 is_now <- with_here(d, here())
-#> here() starts at /tmp/RtmpiCpDnI/file1228a7e8f1d00
-#> here() starts at /home/lindahl/Development/git/github/wither
 
 stopifnot(was != is_now)
 
 # clean up
 unlink(d, recursive=TRUE)
+
 ```
 
-### local\_here
+### local_here
 
 `local_here()` evaluates the remainder of a block under a temporarily
 different here root():
 
-``` r
+```{r example2}
 library(here)
 library(wither)
 
@@ -73,9 +83,8 @@ local({
     stopifnot(was != is_now)
 
 })
-#> here() starts at /tmp/RtmpiCpDnI/file1228a745fa4e5
-#> here() starts at /home/lindahl/Development/git/github/wither
 
 # clean up
 unlink(d, recursive=TRUE)
+
 ```
