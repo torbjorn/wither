@@ -17,3 +17,5 @@ Imports:
     fs,
     here,
     withr
+URL: https://github.com/torbjorn/wither
+BugReports: https://github.com/torbjorn/wither/issues
