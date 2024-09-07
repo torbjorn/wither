@@ -1,2 +1,3 @@
-# localhere
-An R package allowing here() roots to be temporarily relocated
+# wither
+
+An R package allowing R code to be temporarily run under a different here() root.
