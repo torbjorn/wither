@@ -1,5 +1,5 @@
 Package: wither
-Title: Temporarily Relocate here() Root
+Title: Temporarily Change Project Root
 Version: 0.1.0
 Authors@R:
     person("Torbjørn", "Lindahl", , "torbjorn.lindahl@gmail.com", role = c("aut", "cre", "cph"),

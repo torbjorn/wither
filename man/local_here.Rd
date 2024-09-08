@@ -2,7 +2,7 @@
 % Please edit documentation in R/here.R
 \name{local_here}
 \alias{local_here}
-\title{Temporarily Change here() Root For a Block}
+\title{Temporarily Change Project Root}
 \usage{
 local_here(
   new_here,
