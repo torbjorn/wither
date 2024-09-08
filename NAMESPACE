@@ -3,7 +3,6 @@
 export(local_here)
 export(with_here)
 importFrom(fs,dir_exists)
-importFrom(fs,file_touch)
 importFrom(fs,path_rel)
 importFrom(here,here)
 importFrom(here,i_am)

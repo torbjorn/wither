@@ -5,3 +5,4 @@ expect_pathequal <- function(path1, path2, mustWork = FALSE, ...) {
         ...
     )
 }
+
