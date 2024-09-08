@@ -2,6 +2,8 @@ library(withr)
 suppressMessages(library(here))
 library(fs)
 
+source(test_path("testthat_helpers.R"))
+
 test_that("with_here works", {
 
     # setup a working directory
@@ -9,11 +11,11 @@ test_that("with_here works", {
     dir_create(d)
     stopifnot(dir_exists(d))
 
-    expect_equal(with_here(d, here()), d)
-    expect_equal(with_here(d,here("foo")), file.path(d,"foo"))
+    expect_pathequal(with_here(d, here()), d)
+    expect_pathequal(with_here(d, here("foo")), file.path(d, "foo"))
 
     # check that getwd is unaffected
-    expect_equal(with_here(d, getwd()), getwd())
-    expect_equal(with_here(d, getwd(), chdir=TRUE), d)
+    expect_pathequal(with_here(d, getwd()), getwd())
+    expect_pathequal(with_here(d, getwd(), chdir = TRUE), d)
 
 })

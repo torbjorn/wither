@@ -2,7 +2,7 @@
 % Please edit documentation in R/here.R
 \name{with_here}
 \alias{with_here}
-\title{Temporarily Change here() Root For an Expression}
+\title{Temporarily Change Project Root}
 \usage{
 with_here(new_here, expr, chdir = FALSE, verbose = FALSE)
 }

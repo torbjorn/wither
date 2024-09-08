@@ -2,7 +2,7 @@
 ##'
 ##' Changes [here::here()] to temporarily point to a new directory when
 ##' evaluating expression. Changes back afterwards.
-##' @title Temporarily Change here() Root For an Expression
+##' @title Temporarily Change Project Root
 ##' @param new_here new temporary here root directory
 ##' @param expr expression to evaluate
 ##' @param chdir change working directory also
@@ -74,7 +74,7 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 ##'
 ##' Changes [here::here()] to temporarily point to a new directory for the active
 ##' entironment. Changes back afterwards.
-##' @title Temporarily Change here() Root For a Block
+##' @title Temporarily Change Project Root
 ##' @param new_here new temporary here root directory
 ##' @param chdir change working directory also
 ##' @param verbose show here's messages on setting new root
