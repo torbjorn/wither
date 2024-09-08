@@ -27,11 +27,14 @@ evaluating expression. Changes back afterwards.
 }
 \examples{
 library(here)
+library(withr)
 
-d <- tempfile()
-dir.create(d)
+d <- local_tempdir()
 
-with_here(d, cat("here() is now: ", here(), "\n"))
+cat("here() is initially: ", here(), "\n")
+with_here(d, cat("but here() is now: ", here(), "\n"))
+cat("here() is now again: ", here(), "\n")
+
 }
 \author{
 Torbjørn Lindahl

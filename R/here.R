@@ -11,16 +11,19 @@
 ##' @author Torbjørn Lindahl
 ##' @importFrom withr local_tempfile local_dir defer
 ##' @importFrom here here i_am
-##' @importFrom fs path_rel dir_exists
+##' @importFrom fs file_touch path_rel dir_exists
 ##' @importFrom utils capture.output
 ##' @export
 ##' @examples
 ##' library(here)
+##' library(withr)
 ##'
-##' d <- tempfile()
-##' dir.create(d)
+##' d <- local_tempdir()
 ##'
-##' with_here(d, cat("here() is now: ", here(), "\n"))
+##' cat("here() is initially: ", here(), "\n")
+##' with_here(d, cat("but here() is now: ", here(), "\n"))
+##' cat("here() is now again: ", here(), "\n")
+##'
 with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
     if(!dir_exists(new_here))
@@ -30,7 +33,7 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
     # create a temporary file to get us back when we're done
     tf_current <- local_tempfile(tmpdir=current_here, pattern=".here")
-    .file_touch(tf_current)
+    file_touch(tf_current)
 
     # make sure it goes back aftrwards (this will trigger after the
     # above local_dir defer has changed the working dir back
@@ -41,7 +44,7 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
     # create another remporary file to get us where we want to go
     tf_temp <- local_tempfile(tmpdir=new_here, pattern=".here")
-    .file_touch(tf_temp)
+    file_touch(tf_temp)
 
     # opt to suppress i_am's "here() starts at"
     f <- function(x) {
@@ -88,22 +91,22 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 ##' @export
 ##' @examples
 ##' library(here)
+##' library(withr)
 ##'
-##' myfun <- function() {
+##' local({
 ##'
-##'   d <- tempfile()
-##'   dir.create(d)
+##'   d <- local_tempdir()
+##'
+##'   cat("here was initially: ", here(), "\n")
 ##'
 ##'   local_here(d)
 ##'
 ##'   cat("here() is now: ",here(),"\n")
-##'   stopifnot(d == here())
+##'   stopifnot(normalizePath(d) == normalizePath(here()))
 ##'
-##'   # do something
+##'   # do something that requires here() be elsewhere
 ##'
-##'   unlink(d, recursive=TRUE)
-##'
-##' }
+##' })
 local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = parent.frame() ) {
 
     if(!dir_exists(new_here))
@@ -113,7 +116,7 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
 
     # create a temporary file to get us back when we're done
     tf_current <- local_tempfile(tmpdir=current_here, pattern=".here", .local_envir=.local_envir)
-    .file_touch(tf_current)
+    file_touch(tf_current)
 
     # make sure it goes back aftrwards (this will trigger after the
     # above local_dir defer has changed the working dir back
@@ -125,7 +128,7 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
 
     # create another remporary file to get us where we want to go
     tf_temp <- local_tempfile(tmpdir=new_here, pattern=".here")
-    .file_touch(tf_temp)
+    file_touch(tf_temp)
 
     # opt to suppress i_am's "here() starts at"
     f <- function(x) {
@@ -152,11 +155,4 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
 
     invisible(current_here)
 
-}
-
-# fs::file_touch() is causing problems on r-devel on windows. Rolling
-# our own using base functions only.
-.file_touch <- function(path) {
-    file.create(path)
-    stopifnot(file.exists(path))
 }

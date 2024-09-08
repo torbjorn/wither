@@ -8,8 +8,6 @@ test_that("local_here works", {
 
     # setup a working directory
     d <- local_tempdir()
-    dir_create(d)
-    stopifnot(dir_exists(d))
 
     wd_was <- getwd()
     here_was <- here()

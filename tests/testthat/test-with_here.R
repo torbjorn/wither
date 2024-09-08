@@ -8,8 +8,6 @@ test_that("with_here works", {
 
     # setup a working directory
     d <- local_tempdir()
-    dir_create(d)
-    stopifnot(dir_exists(d))
 
     expect_pathequal(with_here(d, here()), d)
     expect_pathequal(with_here(d, here("foo")), file.path(d, "foo"))
