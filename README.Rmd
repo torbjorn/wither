@@ -40,7 +40,7 @@ pak::pak("torbjorn/wither")
 `with_here()` evaluates an expression under a temporarily different
 here root():
 
-```{r example}
+```{r example, eval=FALSE}
 library(here)
 library(wither)
 
@@ -52,7 +52,7 @@ dir.create(d)
 # have here() be somewhere else for an expression
 is_now <- with_here(d, here())
 
-stopifnot(was != is_now)
+stopifnot(normalizePath(was) != normalizePath(is_now))
 
 # clean up
 unlink(d, recursive=TRUE)
@@ -64,7 +64,7 @@ unlink(d, recursive=TRUE)
 `local_here()` evaluates the remainder of a block under a temporarily
 different here root():
 
-```{r example2}
+```{r example2, eval=FALSE}
 library(here)
 library(wither)
 
@@ -80,7 +80,7 @@ local({
 
     is_now <- here()
 
-    stopifnot(was != is_now)
+    stopifnot(normalizePath(was) != normalizePath(is_now))
 
 })
 
