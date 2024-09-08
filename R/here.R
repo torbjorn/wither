@@ -35,6 +35,16 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
     tf_current <- local_tempfile(tmpdir=current_here, pattern=".here")
     file_touch(tf_current)
 
+    # opt to suppress i_am's "here() starts at"
+    f <- function(x) {
+        m <- capture.output(x, type="message")
+        if(!verbose) {
+            m <- grep("^here\\(\\) starts at", m, value=TRUE, invert=TRUE)
+        }
+        if(length(m))
+            message(m)
+    }
+
     # make sure it goes back aftrwards (this will trigger after the
     # above local_dir defer has changed the working dir back
     defer(f(local({
@@ -45,16 +55,6 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
     # create another remporary file to get us where we want to go
     tf_temp <- local_tempfile(tmpdir=new_here, pattern=".here")
     file_touch(tf_temp)
-
-    # opt to suppress i_am's "here() starts at"
-    f <- function(x) {
-        m <- capture.output(x, type="message")
-        if(!verbose) {
-            m <- grep("^here\\(\\) starts at", m, value=TRUE, invert=TRUE)
-        }
-        if(length(m))
-            message(m)
-    }
 
     local({
 
@@ -118,18 +118,6 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
     tf_current <- local_tempfile(tmpdir=current_here, pattern=".here", .local_envir=.local_envir)
     file_touch(tf_current)
 
-    # make sure it goes back aftrwards (this will trigger after the
-    # above local_dir defer has changed the working dir back
-    defer(f(local({
-        local_dir(current_here)
-        i_am(path_rel(tf_current, current_here))
-    })), envir=.local_envir)
-
-
-    # create another remporary file to get us where we want to go
-    tf_temp <- local_tempfile(tmpdir=new_here, pattern=".here")
-    file_touch(tf_temp)
-
     # opt to suppress i_am's "here() starts at"
     f <- function(x) {
         m <- capture.output(x, type="message")
@@ -139,6 +127,17 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
         if(length(m))
             message(m)
     }
+
+    # make sure it goes back aftrwards (this will trigger after the
+    # above local_dir defer has changed the working dir back
+    defer(f(local({
+        local_dir(current_here)
+        i_am(path_rel(tf_current, current_here))
+    })), envir=.local_envir)
+
+    # create another remporary file to get us where we want to go
+    tf_temp <- local_tempfile(tmpdir=new_here, pattern=".here")
+    file_touch(tf_temp)
 
     local({
 
