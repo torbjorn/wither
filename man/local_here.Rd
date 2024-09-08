@@ -32,22 +32,22 @@ entironment. Changes back afterwards.
 }
 \examples{
 library(here)
+library(withr)
 
-myfun <- function() {
+local({
 
-  d <- tempfile()
-  dir.create(d)
+  d <- local_tempdir()
+
+  cat("here was initially: ", here(), "\n")
 
   local_here(d)
 
   cat("here() is now: ",here(),"\n")
-  stopifnot(d == here())
+  stopifnot(normalizePath(d) == normalizePath(here()))
 
-  # do something
+  # do something that requires here() be elsewhere
 
-  unlink(d, recursive=TRUE)
-
-}
+})
 }
 \author{
 Torbjørn Lindahl

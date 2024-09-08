@@ -31,6 +31,7 @@ root():
 
 ``` r
 library(here)
+#> here() starts at /home/tlindahl/git/github/wither
 library(wither)
 
 was <- here()
@@ -40,8 +41,8 @@ dir.create(d)
 
 # have here() be somewhere else for an expression
 is_now <- with_here(d, here())
-#> here() starts at /tmp/RtmpiCpDnI/file1228a7e8f1d00
-#> here() starts at /home/lindahl/Development/git/github/wither
+#> here() starts at /tmp/RtmpEDCzLg/file3855f43e89c2
+#> here() starts at /home/tlindahl/git/github/wither
 
 stopifnot(was != is_now)
 
@@ -73,8 +74,8 @@ local({
     stopifnot(was != is_now)
 
 })
-#> here() starts at /tmp/RtmpiCpDnI/file1228a745fa4e5
-#> here() starts at /home/lindahl/Development/git/github/wither
+#> here() starts at /tmp/RtmpEDCzLg/file3855fbb9a43
+#> here() starts at /home/tlindahl/git/github/wither
 
 # clean up
 unlink(d, recursive=TRUE)
