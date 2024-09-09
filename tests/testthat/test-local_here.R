@@ -16,7 +16,7 @@ test_that("local_here works", {
 
         returned_value <- local_here(d)
 
-        expect_pathequal(returned_value, here_was, mustWork=TRUE)
+        expect_pathequal(returned_value, here_was)
 
         expect_pathequal(here(), d)
         expect_pathequal(getwd(), wd_was)
