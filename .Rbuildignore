@@ -7,3 +7,4 @@
 ^wither\.Rproj$
 ^\.Rproj\.user$
 ^deps\.R$
+^\.github$
