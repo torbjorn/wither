@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/torbjorn/wither/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/torbjorn/wither/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 Run a block or expression temporarily under a different `here()` root.
