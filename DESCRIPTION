@@ -2,8 +2,9 @@ Package: wither
 Title: Temporarily Change Project Root
 Version: 0.1.0
 Authors@R:
-    person("Torbjørn", "Lindahl", , "torbjorn.lindahl@gmail.com", role = c("aut", "cre", "cph"),
+    c(person("Torbjørn", "Lindahl", "torbjorn.lindahl@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0009-0007-5538-0783"))
+    person("Anja", "Minsaas", "anja.minsaas@gmail.com", role = c("aut", "cre"))
 Description: Lets you temporarily execute an expression or a local block with a different here() root in the 'here' package. This is useful for sourcing code in other projects which expect the root directory of here() to be the project directory of those projects. This may be the case with git submodules for example.
 License: MIT + file LICENSE
 Encoding: UTF-8

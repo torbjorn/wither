@@ -31,9 +31,18 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
     current_here <- here()
 
-    # create a temporary file to get us back when we're done
-    tf_current <- local_tempfile(tmpdir=current_here, pattern=".here")
-    file_touch(tf_current)
+    current_here_contents <- dir_ls(path = current_here, all = TRUE)
+    i <- is_file(current_here_contents)
+
+    # find or make a suitable file to get us back when we're done
+    if(length(current_here_contents) >= 1) {
+        # fish out the first file in here()
+        tf_current <- current_here_contents[i][1]
+    } else {
+        # create a temporary file
+        tf_current <- local_tempfile(tmpdir=current_here, pattern=".here")
+        file_touch(tf_current)
+    }
 
     # opt to suppress i_am's "here() starts at"
     f <- function(x) {
@@ -114,9 +123,18 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
 
     current_here <- here()
 
-    # create a temporary file to get us back when we're done
-    tf_current <- local_tempfile(tmpdir=current_here, pattern=".here", .local_envir=.local_envir)
-    file_touch(tf_current)
+    current_here_contents <- dir_ls(path = current_here, all = TRUE)
+    i <- is_file(current_here_contents)
+
+    # find or make a suitable file to get us back when we're done
+    if(length(current_here_contents) >= 1) {
+        # fish out the first file in here()
+        tf_current <- current_here_contents[i][1]
+    } else {
+        # create a temporary file
+        tf_current <- local_tempfile(tmpdir=current_here, pattern=".here")
+        file_touch(tf_current)
+    }
 
     # opt to suppress i_am's "here() starts at"
     f <- function(x) {

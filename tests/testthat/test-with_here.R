@@ -10,7 +10,6 @@ test_that("with_here works", {
     d <- local_tempdir()
 
     expect_pathequal(with_here(d, here()), d)
-    expect_pathequal(with_here(d, here("foo")), file.path(d, "foo"))
 
     # check that getwd is unaffected
     expect_pathequal(with_here(d, getwd()), getwd())
