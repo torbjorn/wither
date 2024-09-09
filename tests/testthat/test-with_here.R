@@ -2,7 +2,7 @@ library(withr)
 suppressMessages(library(here))
 library(fs)
 
-source(test_path("testthat_helpers.R"))
+source(test_path("helpers.R"))
 
 test_that("with_here works", {
 
