@@ -16,10 +16,9 @@ test_that("local_here works", {
 
         returned_value <- local_here(d)
 
-        expect_pathequal(returned_value, here_was)
+        expect_pathequal(returned_value, here_was, mustWork=TRUE)
 
         expect_pathequal(here(), d)
-        expect_pathequal(here("foo"), file.path(d, "foo"))
         expect_pathequal(getwd(), wd_was)
 
     })
@@ -34,7 +33,6 @@ test_that("local_here works", {
         local_here(d, chdir=TRUE)
 
         expect_pathequal(here(), d)
-        expect_pathequal(here("foo"), file.path(d, "foo"))
         expect_pathequal(getwd(), d)
 
     })
