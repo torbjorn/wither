@@ -64,7 +64,7 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
     # make sure it goes back aftrwards (this will trigger after the
     # above local_dir defer has changed the working dir back
     defer(suppress_here_message(local({
-        setwd(current_here)
+        local_dir(current_here)
         i_am(path_rel(tf_current, current_here))
     }), verbose=verbose))
 
