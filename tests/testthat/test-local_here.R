@@ -42,3 +42,26 @@ test_that("local_here works", {
     expect_pathequal(here(), here_was)
 
 })
+
+test_that("working directory doesn't change", {
+
+    # go to a tempdir
+    local_dir(local_tempdir())
+
+    here_was <- here()
+    wd_was <- getwd()
+
+    local({
+
+        d <- local_tempdir()
+        local_here(d)
+
+        # here is now d
+        expect_pathequal(d, here())
+
+    })
+
+    expect_pathequal(here_was, here())
+    expect_pathequal(getwd(), wd_was)
+
+})
