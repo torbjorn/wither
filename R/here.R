@@ -31,39 +31,19 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
     current_here <- here()
 
-    current_here_contents <- dir_ls(path = current_here, all = TRUE)
-    i <- is_file(current_here_contents)
+    # create a temporary file to get us back when we're done
+    tf_current <- file_beacon(current_here)
 
-    # find or make a suitable file to get us back when we're done
-    if(length(current_here_contents) >= 1) {
-        # fish out the first file in here()
-        tf_current <- current_here_contents[i][1]
-    } else {
-        # create a temporary file
-        tf_current <- local_tempfile(tmpdir=current_here, pattern=".here")
-        file_touch(tf_current)
-    }
-
-    # opt to suppress i_am's "here() starts at"
-    f <- function(x) {
-        m <- capture.output(x, type="message")
-        if(!verbose) {
-            m <- grep("^here\\(\\) starts at", m, value=TRUE, invert=TRUE)
-        }
-        if(length(m))
-            message(m)
-    }
 
     # make sure it goes back aftrwards (this will trigger after the
     # above local_dir defer has changed the working dir back
-    defer(f(local({
+    defer(suppress_here_message(local({
         setwd(current_here)
         i_am(path_rel(tf_current, current_here))
-    })))
+    }), verbose=verbose))
 
     # create another remporary file to get us where we want to go
-    tf_temp <- local_tempfile(tmpdir=new_here, pattern=".here")
-    file_touch(tf_temp)
+    tf_temp <- file_beacon(new_here)
 
     local({
 
@@ -71,7 +51,7 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
         local_dir(new_here)
 
         # redirect here temporarily
-        f(i_am(path_rel(tf_temp, new_here)))
+        suppress_here_message(i_am(path_rel(tf_temp, new_here)), verbose=verbose)
 
     })
 
@@ -123,39 +103,18 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
 
     current_here <- here()
 
-    current_here_contents <- dir_ls(path = current_here, all = TRUE)
-    i <- is_file(current_here_contents)
-
-    # find or make a suitable file to get us back when we're done
-    if(length(current_here_contents) >= 1) {
-        # fish out the first file in here()
-        tf_current <- current_here_contents[i][1]
-    } else {
-        # create a temporary file
-        tf_current <- local_tempfile(tmpdir=current_here, pattern=".here")
-        file_touch(tf_current)
-    }
-
-    # opt to suppress i_am's "here() starts at"
-    f <- function(x) {
-        m <- capture.output(x, type="message")
-        if(!verbose) {
-            m <- grep("^here\\(\\) starts at", m, value=TRUE, invert=TRUE)
-        }
-        if(length(m))
-            message(m)
-    }
+    # create a temporary file to get us back when we're done
+    tf_current <- file_beacon(current_here)
 
     # make sure it goes back aftrwards (this will trigger after the
     # above local_dir defer has changed the working dir back
-    defer(f(local({
+    defer(suppress_here_message(local({
         local_dir(current_here)
         i_am(path_rel(tf_current, current_here))
-    })), envir=.local_envir)
+    }), verbose=verbose), envir=.local_envir)
 
     # create another remporary file to get us where we want to go
-    tf_temp <- local_tempfile(tmpdir=new_here, pattern=".here")
-    file_touch(tf_temp)
+    tf_temp <- file_beacon(new_here)
 
     local({
 
@@ -163,7 +122,7 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
         local_dir(new_here)
 
         # redirect here temporarily
-        f(i_am(path_rel(tf_temp, new_here)))
+        suppress_here_message(i_am(path_rel(tf_temp, new_here)), verbose=verbose)
 
     })
 
@@ -172,4 +131,32 @@ local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = pare
 
     invisible(current_here)
 
+}
+
+##' @importFrom fs dir_ls is_file
+##' @importFrom withr local_tempfile
+file_beacon <- function(where) {
+
+    stopifnot(dir_exists(where))
+    existing_paths <- Filter(is_file, dir_ls(where, all=TRUE))
+
+    if(length(existing_paths))
+        return(existing_paths[1])
+
+    # create a temporary local to the parent environment
+    f <- local_tempfile(tmpdir=where, .local_envir=parent.frame(), pattern=".here")
+    file_touch(f)
+    return(f)
+
+}
+
+
+##' @importFrom utils capture.output
+suppress_here_message <- function(x, verbose=TRUE) {
+    m <- capture.output(x, type="message")
+    if(!verbose) {
+        m <- grep("^here\\(\\) starts at", m, value=TRUE, invert=TRUE)
+    }
+    if(length(m))
+        message(m)
 }
