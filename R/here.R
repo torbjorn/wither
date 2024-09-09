@@ -1,29 +1,55 @@
-##' Evaluate an expresion under a temporary here() root
+##' Temporarily change the here() root
 ##'
-##' Changes [here::here()] to temporarily point to a new directory when
-##' evaluating expression. Changes back afterwards.
+##' Changes [here::here()] to temporarily point to a new
+##' directory. Automatically changes back to the original value when
+##' finished.
+##'
+##' The with_* and local_* flavours of this functionality mimics that
+##' which is typically used in the withr package.
 ##' @title Temporarily Change Project Root
 ##' @param new_here new temporary here root directory
 ##' @param expr expression to evaluate
-##' @param chdir change working directory also
+##' @param chdir also temporarily change working directory
 ##' @param verbose show here's messages on setting new root
-##' @return the results of the provided R expression
+##' @return [with_here()] returns the result of the
+##'     expression. [local_here()] returns the original value of
+##'     here(), before the change.
 ##' @author Torbjørn Lindahl
 ##' @importFrom withr local_tempfile local_dir defer
 ##' @importFrom here here i_am
 ##' @importFrom fs file_touch path_rel dir_exists
-##' @importFrom utils capture.output
 ##' @export
+##' @rdname with_here
 ##' @examples
 ##' library(here)
 ##' library(withr)
 ##'
 ##' d <- local_tempdir()
 ##'
-##' cat("here() is initially: ", here(), "\n")
-##' with_here(d, cat("but here() is now: ", here(), "\n"))
-##' cat("here() is now again: ", here(), "\n")
+##' cat("here() is initially:", here(), "\n")
 ##'
+##' # temporarily do things uner a different here() root:
+##' with_here(d, cat("but here() is now:", here(), "\n"))
+##'
+##' # check that everything is shifted back
+##' cat("here() is now again:", here(), "\n")
+##'
+##' local({
+##'
+##'   d <- local_tempdir()
+##'
+##'   cat("here was initially: ", here(), "\n")
+##'
+##'   local_here(d)
+##'
+##'   cat("after local_here(), here() is: ",here(),"\n")
+##'   stopifnot(normalizePath(d) == normalizePath(here()))
+##'
+##'   # do something that requires here() be elsewhere
+##'
+##' })
+##'
+##' cat("outside the block, here() is again:", here(), "\n")
 with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
     if(!dir_exists(new_here))
@@ -62,40 +88,12 @@ with_here <- function(new_here, expr, chdir=FALSE, verbose=FALSE ) {
 
 }
 
-##' Changes the here() root for current environment
-##'
-##' Changes [here::here()] to temporarily point to a new directory for the active
-##' entironment. Changes back afterwards.
-##' @title Temporarily Change Project Root
-##' @param new_here new temporary here root directory
-##' @param chdir change working directory also
-##' @param verbose show here's messages on setting new root
 ##' @param .local_envir the environment to use for scoping, see [withr::local_dir()]
-##' @return The original here() root
-##' @author Torbjørn Lindahl
 ##' @importFrom withr local_tempfile local_dir defer
 ##' @importFrom here here i_am
 ##' @importFrom fs path_rel dir_exists
-##' @importFrom utils capture.output
 ##' @export
-##' @examples
-##' library(here)
-##' library(withr)
-##'
-##' local({
-##'
-##'   d <- local_tempdir()
-##'
-##'   cat("here was initially: ", here(), "\n")
-##'
-##'   local_here(d)
-##'
-##'   cat("here() is now: ",here(),"\n")
-##'   stopifnot(normalizePath(d) == normalizePath(here()))
-##'
-##'   # do something that requires here() be elsewhere
-##'
-##' })
+##' @rdname with_here
 local_here <- function(new_here, chdir=FALSE, verbose=FALSE, .local_envir = parent.frame() ) {
 
     if(!dir_exists(new_here))

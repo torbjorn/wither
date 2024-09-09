@@ -2,28 +2,44 @@
 % Please edit documentation in R/here.R
 \name{with_here}
 \alias{with_here}
+\alias{local_here}
 \title{Temporarily Change Project Root}
 \usage{
 with_here(new_here, expr, chdir = FALSE, verbose = FALSE)
+
+local_here(
+  new_here,
+  chdir = FALSE,
+  verbose = FALSE,
+  .local_envir = parent.frame()
+)
 }
 \arguments{
 \item{new_here}{new temporary here root directory}
 
 \item{expr}{expression to evaluate}
 
-\item{chdir}{change working directory also}
+\item{chdir}{also temporarily change working directory}
 
 \item{verbose}{show here's messages on setting new root}
+
+\item{.local_envir}{the environment to use for scoping, see \code{\link[withr:with_dir]{withr::local_dir()}}}
 }
 \value{
-the results of the provided R expression
+\code{\link[=with_here]{with_here()}} returns the result of the
+expression. \code{\link[=local_here]{local_here()}} returns the original value of
+here(), before the change.
 }
 \description{
-Evaluate an expresion under a temporary here() root
+Temporarily change the here() root
 }
 \details{
-Changes \code{\link[here:here]{here::here()}} to temporarily point to a new directory when
-evaluating expression. Changes back afterwards.
+Changes \code{\link[here:here]{here::here()}} to temporarily point to a new
+directory. Automatically changes back to the original value when
+finished.
+
+The with_* and local_* flavours of this functionality mimics that
+which is typically used in the withr package.
 }
 \examples{
 library(here)
@@ -31,10 +47,30 @@ library(withr)
 
 d <- local_tempdir()
 
-cat("here() is initially: ", here(), "\n")
-with_here(d, cat("but here() is now: ", here(), "\n"))
-cat("here() is now again: ", here(), "\n")
+cat("here() is initially:", here(), "\n")
 
+# temporarily do things uner a different here() root:
+with_here(d, cat("but here() is now:", here(), "\n"))
+
+# check that everything is shifted back
+cat("here() is now again:", here(), "\n")
+
+local({
+
+  d <- local_tempdir()
+
+  cat("here was initially: ", here(), "\n")
+
+  local_here(d)
+
+  cat("after local_here(), here() is: ",here(),"\n")
+  stopifnot(normalizePath(d) == normalizePath(here()))
+
+  # do something that requires here() be elsewhere
+
+})
+
+cat("outside the block, here() is again:", here(), "\n")
 }
 \author{
 Torbjørn Lindahl
