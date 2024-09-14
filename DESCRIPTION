@@ -1,6 +1,6 @@
 Package: wither
 Title: Temporarily Change Project Root
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R:
     c(person("Torbjørn", "Lindahl", email="torbjorn.lindahl@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0009-0007-5538-0783")),
