@@ -30,7 +30,7 @@ test_that("local_here works", {
     # test with changing dir
     local({
 
-        local_here(d, chdir=TRUE)
+        local_here(d, chdir = TRUE)
 
         expect_pathequal(here(), d)
         expect_pathequal(getwd(), d)

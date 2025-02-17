@@ -1,0 +1,35 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/rocker-org/devcontainer-templates/tree/main/src/r-ver
+{
+    "name": "wither",
+    // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+    "build": {
+    	"dockerfile": "../Dockerfile",
+        "args": { 
+            "USERNAME": "rstudio",
+            "USER_UID": "${localUserUid}",
+            "USER_GID": "${localUserGid}",
+        }
+    },
+
+    "workspaceMount": "source=${localWorkspaceFolder},target=/project,type=bind",
+    "workspaceFolder": "/project",
+
+    // Configure tool-specific properties.
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.makefile-tools",
+                "ms-azuretools.vscode-docker",
+                "REditorSupport.r"
+            ]
+        }
+    },
+
+    // Runs a command after the container is created.
+    "postCreateCommand": "Rscript ops/build-r-cache.R",
+
+    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+    "remoteUser": "rstudio"
+
+}
