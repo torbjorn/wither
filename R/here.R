@@ -158,3 +158,7 @@ suppress_here_message <- function(x, verbose=TRUE) {
     if(length(m))
         message(m)
 }
+
+##' @importFrom here here
+##' @export
+here::here
